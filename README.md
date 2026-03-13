@@ -5,216 +5,221 @@ https://drive.google.com/drive/folders/19W3X8s5tWeRiM5mxVW6qGNP_SiTiaw5i?usp=sha
 
 
 
+1. C program to create a Binary Search Tree (BST), insert elements, and perform inorder traversal
 
-[11/03, 9:21 pm] Shahad Ssm: 1. Create college database and make an table with id,name,department,marks and insert two data's to the table
-2. Make an login page with  session and cookie. when user login save it into session and print welcome back then set an logout button when click that the session will clear and show the login page.
-3. praveenode chodikendi varum. avank ariyam.
-[11/03, 10:31 pm] Shahad Ssm: 3. create cookie for store username
-cookie expire time = 1 day
-display username form cookie
+#include <stdio.h>
+#include <stdlib.h>
 
+// Structure of a node in BST
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
 
-wp 1
-
-
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Connect to MySQL
-$conn = new mysqli($servername, $username, $password);
-
-if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
+// Function to create a new node
+struct node* createNode(int value) {
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = value;      // store value in node
+    newNode->left = NULL;       // initially left child is NULL
+    newNode->right = NULL;      // initially right child is NULL
+    return newNode;
 }
 
-// Create database
-$conn->query("CREATE DATABASE IF NOT EXISTS college");
+// Function to insert a node into BST
+struct node* insert(struct node* root, int value) {
 
-// Select database
-$conn->select_db("college");
+    // If tree is empty, create the root node
+    if (root == NULL)
+        return createNode(value);
 
-// Create table
-$conn->query("CREATE TABLE IF NOT EXISTS students(
-id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(100),
-department VARCHAR(100),
-marks INT
-)");
+    // If value is smaller, insert into left subtree
+    if (value < root->data)
+        root->left = insert(root->left, value);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // If value is greater, insert into right subtree
+    else
+        root->right = insert(root->right, value);
 
-$name = $_POST['name'];
-$department = $_POST['department'];
-$marks = $_POST['marks'];
-
-$conn->query("INSERT INTO students(name,department,marks)
-VALUES('$name','$department','$marks')");
-
-echo "Data inserted successfully<br>";
+    return root; // return unchanged root
 }
 
-// Display table
-$result = $conn->query("SELECT * FROM students");
+// Inorder traversal (Left → Root → Right)
+void inorder(struct node* root) {
 
-echo "<h2>Students Table</h2>";
-echo "<table border='1'>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Department</th>
-<th>Marks</th>
-</tr>";
+    // recursion stops when node becomes NULL
+    if (root != NULL) {
 
-while($row = $result->fetch_assoc()){
-echo "<tr>
-<td>".$row['id']."</td>
-<td>".$row['name']."</td>
-<td>".$row['department']."</td>
-<td>".$row['marks']."</td>
-</tr>";
+        inorder(root->left);          // visit left subtree
+        printf("%d ", root->data);    // print current node
+        inorder(root->right);         // visit right subtree
+    }
 }
 
-echo "</table>";
+int main() {
 
-$conn->close();
+    struct node* root = NULL;
 
-?>
+    // inserting given elements into BST
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 70);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 60);
+    insert(root, 80);
 
-<!DOCTYPE html>
-<html>
-<body>
+    printf("Inorder Traversal: ");
+    inorder(root);   // perform traversal
 
-<h2>Insert Student</h2>
-
-<form method="POST">
-
-<input type="text" name="name" placeholder="Name" required><br><br>
-
-<input type="text" name="department" placeholder="Department" required><br><br>
-
-<input type="number" name="marks" placeholder="Marks" required><br><br>
-
-<button type="submit">Insert</button>
-
-</form>
-
-</body>
-</html>
-
-
-wp2
-
-
-
-<?php
-session_start();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-if(isset($_POST['login'])){
-
-$username = $_POST['username'];
-
-$_SESSION['username'] = $username;
-
-// cookie expires in 1 hour
-setcookie("username",$username,time()+3600);
-
+    return 0;
 }
 
-if(isset($_POST['logout'])){
-session_destroy();
-header("Location: login.php");
+Output
+
+Inorder Traversal: 20 30 40 50 60 70 80
+
+
+---
+
+2. C program to create a binary tree and count total nodes using recursion
+
+Tree structure used:
+
+10
+     /  \
+   20    30
+  /  \
+40   50
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+// Function to create node
+struct node* createNode(int value) {
+
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+
+    newNode->data = value;   // assign value
+    newNode->left = NULL;    // initialize left child
+    newNode->right = NULL;   // initialize right child
+
+    return newNode;
 }
 
-}
-?>
+// Recursive function to count nodes
+int countNodes(struct node* root) {
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Login Page</title>
-</head>
-<body>
+    // Base condition: if tree is empty
+    if (root == NULL)
+        return 0;
 
-<?php
-
-if(isset($_SESSION['username'])){
-
-echo "<h2>Welcome back ".$_SESSION['username']."</h2>";
-
-?>
-
-<form method="POST">
-<button name="logout">Logout</button>
-</form>
-
-<?php
-}
-else{
-?>
-
-<h2>Login</h2>
-
-<form method="POST">
-<input type="text" name="username" placeholder="Enter Username" required>
-<button type="submit" name="login">Login</button>
-</form>
-
-<?php
-}
-?>
-
-</body>
-</html>
-
-
-
-wp3
-
-
-<?php
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-$username = $_POST['username'];
-
-// cookie expires in 1 day
-setcookie("username",$username,time()+86400);
-
-echo "Cookie created successfully<br>";
-
+    // count = left subtree + right subtree + current node
+    return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
-if(isset($_COOKIE['username'])){
-echo "Username from Cookie: ".$_COOKIE['username'];
+int main() {
+
+    // Manually creating the given binary tree
+    struct node* root = createNode(10);
+
+    root->left = createNode(20);
+    root->right = createNode(30);
+
+    root->left->left = createNode(40);
+    root->left->right = createNode(50);
+
+    // Calling recursive function
+    int total = countNodes(root);
+
+    printf("Total number of nodes = %d", total);
+
+    return 0;
 }
 
-?>
+Output
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Cookie Example</title>
-</head>
-<body>
-
-<form method="POST">
-
-<label>Enter Username</label><br>
-
-<input type="text" name="username" required><br><br>
-
-<button type="submit">Submit</button>
-
-</form>
-
-</body>
-</html>
+Total number of nodes = 5
 
 
+---
 
+3. C program to create a binary tree and find the height of the tree
 
+Tree structure used:
+
+15
+ |
+25
+ |
+35
+ |
+45
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+// Function to create node
+struct node* createNode(int value) {
+
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+
+    newNode->data = value;  // assign value
+    newNode->left = NULL;   // initialize children
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+// Function to find height using recursion
+int height(struct node* root) {
+
+    // if tree is empty
+    if (root == NULL)
+        return 0;
+
+    // find height of left subtree
+    int leftHeight = height(root->left);
+
+    // find height of right subtree
+    int rightHeight = height(root->right);
+
+    // return greater height + 1 for current node
+    if (leftHeight > rightHeight)
+        return leftHeight + 1;
+    else
+        return rightHeight + 1;
+}
+
+int main() {
+
+    // creating the given tree
+    struct node* root = createNode(15);
+    root->left = createNode(25);
+    root->left->left = createNode(35);
+    root->left->left->left = createNode(45);
+
+    int h = height(root);
+
+    printf("Height of tree = %d", h);
+
+    return 0;
+}
+
+Output
+
+Height of tree = 4
