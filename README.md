@@ -4,6 +4,10 @@ https://www.onlinegdb.com/0m5S-FOsJj
 https://drive.google.com/drive/folders/19W3X8s5tWeRiM5mxVW6qGNP_SiTiaw5i?usp=sharing
 
 
+Ad lab 
+https://chatgpt.com/share/69c40748-660c-8320-b993-60c628201dc9
+
+
 
 1. C program to create a Binary Search Tree (BST), insert elements, and perform inorder traversal
 
