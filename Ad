@@ -1,0 +1,53 @@
+[12/05, 9:15 am] Shahad Ssm: # Area of a Triangle with Invalid Triangle Check
+
+# Get sides from user
+a = float(input("Enter side a: "))
+b = float(input("Enter side b: "))
+c = float(input("Enter side c: "))
+
+# Check triangle validity
+if (a + b > c) and (a + c > b) and (b + c > a):
+
+    # Heron's Formula
+    s = (a + b + c) / 2
+
+    area = (s * (s - a) * (s - b) * (s - c)) ** 0.5
+
+    print("Valid Triangle")
+    print("Area of triangle =", area)
+
+else:
+    print("Invalid Triangle")
+[12/05, 9:15 am] Shahad Ssm: # Fibonacci Series
+
+n = int(input("Enter the limit: "))
+
+a = 0
+b = 1
+
+print("Fibonacci Series:")
+
+for i in range(n):
+    print(a)
+
+    c = a + b
+    a = b
+    b = c
+[12/05, 9:15 am] Shahad Ssm: # Prime Number using isPrime logic
+
+num = int(input("Enter a number: "))
+
+isPrime = True
+
+if num <= 1:
+    isPrime = False
+else:
+    for i in range(2, num):
+        if num % i == 0:
+            isPrime = False
+            break
+
+if isPrime:
+    print("Prime Number")
+else:
+    print("Not a Prime Number")
